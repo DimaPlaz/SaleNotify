@@ -41,12 +41,16 @@ class SteamRepository(BaseSteamRepository):
 
     async def get_games(self) -> list[Game]:
         games: list[Game] = []
+        # force_infinite = 1 & category1 = 998 & hidef2p = 1 & ndl = 1 & snr = 1_7_7_230_7 & infinite = 1
         params = {
             "start": 0,
             "count": settings.STEAM_SEARCH_COUNT,
             "sort_by": "_ASC",
-            "supportedlang": "english",
-            "infinite": 1
+            "infinite": 1,
+            "force_infinite": 1,
+            "category1": 998,
+            "hidef2p": 1,
+            "ndl": 1,
         }
         while True:
             try:
