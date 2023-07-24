@@ -26,3 +26,19 @@ class UpdateGame:
     discount: int
     image_link: str
     store_link: str
+
+
+@dataclass
+class Subscription:
+    client_id: int
+    game_id: int
+
+
+@dataclass
+class CreateSubscription(Subscription):
+    ...
+
+
+@dataclass
+class RemoveSubscription(Subscription):
+    ...

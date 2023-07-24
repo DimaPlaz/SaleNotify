@@ -1,6 +1,10 @@
+from logger.logger import get_logger
 from repositories.interfaces import BaseSteamRepository, BaseGameRepository
 from services.interfaces import Synchronizer
 from services.utils import batch
+
+
+logger = get_logger()
 
 
 class SteamSynchronizer(Synchronizer):

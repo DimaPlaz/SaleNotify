@@ -1,7 +1,8 @@
 from typing import Iterable
 
-from core.models import GameModel
-from dtos.game import Game, CreateGame, UpdateGame
+from core.models import GameModel, GameSubscriptionModel, ClientModel
+from dtos.client import Client
+from dtos.game import Game, CreateGame, UpdateGame, Subscription
 
 
 class GameFactory:
@@ -45,3 +46,22 @@ class GameFactory:
     @staticmethod
     def create_dtos_to_models(create_games: list[CreateGame]) -> list[GameModel]:
         return [GameFactory.create_dto_to_model(cg) for cg in create_games]
+
+
+class SubscriptionFactory:
+    @staticmethod
+    def model_to_dto(model: GameSubscriptionModel) -> Subscription:
+        return Subscription(
+            client_id=model.client.id,
+            game_id=model.game.id
+        )
+
+    @staticmethod
+    def models_to_dtos(models: Iterable[GameSubscriptionModel]) -> list[Subscription]:
+        return [SubscriptionFactory.model_to_dto(m) for m in models]
+
+
+class ClientFactory:
+    @staticmethod
+    def model_to_dto(model: ClientModel) -> Client:
+        return Client(id=model.id, username=model.user, chat_id=model.chat_id)

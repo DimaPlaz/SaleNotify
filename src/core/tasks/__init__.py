@@ -1,7 +1,7 @@
-from broker.celery import app
+from broker.celery import celery_app
 
 
-@app.task
+@celery_app.task
 def sync_games_task():
     import asyncio
 

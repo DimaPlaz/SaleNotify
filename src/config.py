@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     ENVIRONMENT: str
     SERVICE_NAME: str
     BACKEND_CORS_ORIGINS: List[str] = []
+
+    TELEGRAM_BOT_TOKEN: str
+    TELEGRAM_WEBHOOK: Optional[str] = None
+
     ROOT_PATH: str = "/"
     ADMIN_PATH: str = "/"
 
@@ -24,13 +28,16 @@ class Settings(BaseSettings):
     POSTGRES_POOL_MAX_SIZE: int = 5
     POSTGRES_TEST_DB_NAME: Optional[str] = None
 
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
     REDIS_URL: str = "redis://localhost:6379"
+
     MODULES: list[str] = ["core"]
     CELERY_IMPORTS: list[str] = ["core.tasks.sync_games",
                                  "core.tasks.notify"]
     TIMEZONE: str = "UTC"
     STEAM_SEARCH_URL: str = "https://store.steampowered.com/search/results/"
-    STEAM_SEARCH_COUNT: int = 2000
+    STEAM_SEARCH_COUNT: int = 100
 
     def get_postgres_uri(self) -> str:
         return (
