@@ -28,7 +28,7 @@ class BaseSteamRepository(ABC):
         raise NotImplementedError
 
 
-class BaseSubscriptionsRepository(ABC):
+class BaseSubscriptionRepository(ABC):
     @abstractmethod
     async def subscribe(self, sub: CreateSubscription):
         raise NotImplementedError
@@ -39,6 +39,10 @@ class BaseSubscriptionsRepository(ABC):
 
     @abstractmethod
     async def get_client_subscriptions(self, client_id: int) -> list[Subscription]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete_client_subscriptions(self, client_id: int):
         raise NotImplementedError
 
 

@@ -21,3 +21,10 @@ async def registration(rr: schemas.RegistrationRequest = Depends(),
             username=client.username
         )
     )
+
+
+@client_router.delete("/registration", response_model=schemas.BaseResponse)
+async def registration(rr: schemas.RemovingRequest = Depends(),
+                       client_service: ClientServiceI = Depends(deps.get_client_service)):
+    await client_service.unregister(rr.client_id)
+    return schemas.BaseResponse(success=True)

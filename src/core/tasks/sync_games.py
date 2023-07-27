@@ -4,7 +4,5 @@ async def sync_games():
     from repositories.game_repository import TortoiseGameRepository
 
     service = SteamSynchronizer(SteamRepository(), TortoiseGameRepository())
-    print("Пошла Жара")
-    updates = await service.sync()
-    print(updates)
+    return await service.sync()
 
