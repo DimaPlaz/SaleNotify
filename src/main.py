@@ -13,7 +13,6 @@ app = FastAPI(
     description="Сервис оповещейний о скидках.",
     version="0.0.1",
 )
-register_tortoise(app, config=settings.TORTOISE_CONFIG)
 
 # middlewares
 app.add_middleware(
@@ -28,3 +27,4 @@ app.add_middleware(
 @app.on_event("startup")
 def start_event_handler():
     setup_logging(app, settings)
+    register_tortoise(app, config=settings.TORTOISE_CONFIG)

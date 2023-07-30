@@ -39,3 +39,20 @@ class SubscribeRequest(BaseSubscriptionRequest):
 
 class UnsubscribeRequest(BaseSubscriptionRequest):
     ...
+
+
+class BaseGameSchema(BaseModel):
+    id: int
+    name: str
+    discount: int
+    image_link: str
+    store_link: str
+
+
+class SearchGamesRequest(BaseModel):
+    keyword: str
+
+
+class SearchGamesResponse(BaseResponse):
+    games: Optional[list[BaseGameSchema]] = None
+    message: Optional[str] = None

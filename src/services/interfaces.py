@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from dtos.client import CreateClient
-from dtos.game import CreateSubscription, RemoveSubscription
+from dtos.game import CreateSubscription, RemoveSubscription, Game
 
 
 class Synchronizer(ABC):
@@ -27,4 +27,10 @@ class SubscriptionServiceI(ABC):
 
     @abstractmethod
     async def unsubscribe(self, remove_subscription: RemoveSubscription):
+        raise NotImplementedError
+
+
+class GamesServiceI(ABC):
+    @abstractmethod
+    async def search_by_keyword(self, keyword: str) -> list[Game]:
         raise NotImplementedError

@@ -20,3 +20,7 @@ class TortoiseGameRepository(BaseGameRepository):
     async def bulk_update_games(self, update_games: list[UpdateGame]):
         games = GameFactory.dtos_to_models(update_games)
         await GameModel.bulk_update(games, ["discount"], batch_size=300)
+
+    async def search_by_keyword(self, keyword: str) -> list[Game]:
+        games = await GameModel.filter(name__icontains=keyword)
+        return GameFactory.models_to_dtos(games)

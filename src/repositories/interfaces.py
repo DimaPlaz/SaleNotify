@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from dtos.client import CreateClient
-from dtos.game import Game, CreateGame, UpdateGame, CreateSubscription, RemoveSubscription, Subscription, Client
+from dtos.client import CreateClient, Client
+from dtos.game import Game, CreateGame, UpdateGame, CreateSubscription, RemoveSubscription, Subscription
 
 
 class BaseGameRepository(ABC):
@@ -19,6 +19,10 @@ class BaseGameRepository(ABC):
 
     @abstractmethod
     async def bulk_update_games(self, update_games: list[UpdateGame]):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def search_by_keyword(self, keyword: str) -> list[Game]:
         raise NotImplementedError
 
 

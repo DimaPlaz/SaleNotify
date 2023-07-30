@@ -624,6 +624,52 @@ files = [
 test = ["pytest (>=6)"]
 
 [[package]]
+name = "factory-boy"
+version = "3.3.0"
+description = "A versatile test fixtures replacement based on thoughtbot's factory_bot for Ruby."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "factory_boy-3.3.0-py2.py3-none-any.whl", hash = "sha256:a2cdbdb63228177aa4f1c52f4b6d83fab2b8623bf602c7dedd7eb83c0f69c04c"},
+    {file = "factory_boy-3.3.0.tar.gz", hash = "sha256:bc76d97d1a65bbd9842a6d722882098eb549ec8ee1081f9fb2e8ff29f0c300f1"},
+]
+
+[package.dependencies]
+Faker = ">=0.7.0"
+
+[package.extras]
+dev = ["Django", "Pillow", "SQLAlchemy", "coverage", "flake8", "isort", "mongoengine", "sqlalchemy-utils", "tox", "wheel (>=0.32.0)", "zest.releaser[recommended]"]
+doc = ["Sphinx", "sphinx-rtd-theme", "sphinxcontrib-spelling"]
+
+[[package]]
+name = "factory-boy-extra"
+version = "0.1.3"
+description = ""
+optional = false
+python-versions = ">=3.8.7,<4.0.0"
+files = [
+    {file = "factory_boy_extra-0.1.3-py3-none-any.whl", hash = "sha256:770e82bdb0e9a98249741641e69fd8f09254e9ea8d6d29c1a7302ed3d1f8bc2b"},
+    {file = "factory_boy_extra-0.1.3.tar.gz", hash = "sha256:4cc2791232d591cb5910cddd560ae3e6323e4f1b107b469a882ba56cbc159c82"},
+]
+
+[package.dependencies]
+factory-boy = ">=3.2.0,<4.0.0"
+
+[[package]]
+name = "faker"
+version = "19.2.0"
+description = "Faker is a Python package that generates fake data for you."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "Faker-19.2.0-py3-none-any.whl", hash = "sha256:c6c1218482faf79ae1d791bb7124067d12339e0b8f400de855e2c281bcf78c77"},
+    {file = "Faker-19.2.0.tar.gz", hash = "sha256:78840b94843f3aa32a34a220b2b5e8b309e3ffff3a231b0c54e841bb68e0757d"},
+]
+
+[package.dependencies]
+python-dateutil = ">=2.4"
+
+[[package]]
 name = "fastapi"
 version = "0.100.0"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
@@ -1489,4 +1535,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "8aaeeb36b761a3975e5fe2b8bfd6520a982d0d0f4201fb1cd61dcf2de3543172"
+content-hash = "de36c6651ca53558aec6795ed1ab9b58169295311b05ec21fba68eb9100fcbb6"
