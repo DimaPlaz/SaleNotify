@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
 
 from config import settings
+from core.api.router import api_v1_router
 from logger import setup_logging
 
 
@@ -14,6 +15,12 @@ app = FastAPI(
     version="0.0.1",
 )
 
+
+@app.on_event("startup")
+def start_event_handler():
+    setup_logging(app, settings)
+    register_tortoise(app, config=settings.TORTOISE_CONFIG)
+
 # middlewares
 app.add_middleware(
     CORSMiddleware,
@@ -24,7 +31,5 @@ app.add_middleware(
 )
 
 
-@app.on_event("startup")
-def start_event_handler():
-    setup_logging(app, settings)
-    register_tortoise(app, config=settings.TORTOISE_CONFIG)
+# routers
+app.include_router(api_v1_router)
