@@ -34,3 +34,9 @@ class GamesServiceI(ABC):
     @abstractmethod
     async def search_by_keyword(self, keyword: str) -> list[Game]:
         raise NotImplementedError
+
+
+class NotifierI(ABC):
+    @abstractmethod
+    async def notify_clients(self, game_id: int):
+        raise NotImplementedError

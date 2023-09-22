@@ -21,6 +21,7 @@ def start_event_handler():
     setup_logging(app, settings)
     register_tortoise(app, config=settings.TORTOISE_CONFIG)
 
+
 # middlewares
 app.add_middleware(
     CORSMiddleware,

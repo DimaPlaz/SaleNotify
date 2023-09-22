@@ -10,6 +10,10 @@ class BaseGameRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def get_game_by_id(self, game_id: int) -> Game:
+        raise NotImplementedError
+
+    @abstractmethod
     async def get_games_by_names(self, names: list[str]) -> list[Game]:
         raise NotImplementedError
 
@@ -53,4 +57,8 @@ class BaseSubscriptionRepository(ABC):
 class BaseClientRepository(ABC):
     @abstractmethod
     async def get_or_create_client(self, create_client: CreateClient) -> Client:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_clients_by_game(self, game_id: int) -> list[Client]:
         raise NotImplementedError

@@ -1,11 +1,13 @@
 import asyncio
+import threading
+import time
 from asyncio import sleep
 from typing import Any
 
 import factory
 from factory_boy_extra.tortoise_factory import TortoiseModelFactory
 
-from core.models import GameModel
+from core.models import GameModel, ClientModel, GameSubscriptionModel
 
 
 class BaseTortoiseModelFactory(TortoiseModelFactory):
@@ -17,7 +19,12 @@ class BaseTortoiseModelFactory(TortoiseModelFactory):
         **kwargs: Any,
     ):
         instance = model_class(*args, **kwargs)
-        asyncio.create_task(instance.save())
+        loop = asyncio.new_event_loop()
+        thr = threading.Thread(target=loop.run_forever, name="Async Runner", daemon=True)
+        thr.start()
+        future = asyncio.run_coroutine_threadsafe(instance.save(), loop)
+        while not future.done():
+            time.sleep(0.0001)
         return instance
 
     @classmethod
@@ -34,3 +41,19 @@ class GameModelFactory(BaseTortoiseModelFactory):
 
     class Meta:
         model = GameModel
+
+
+class ClientModelFactory(BaseTortoiseModelFactory):
+    user = factory.Sequence(lambda n: f"user-{n}")
+    chat_id = factory.Sequence(lambda n: 100000000 + n)
+
+    class Meta:
+        model = ClientModel
+
+
+class GameSubscriptionModelFactory(BaseTortoiseModelFactory):
+    client = factory.SubFactory(ClientModelFactory)
+    game = factory.SubFactory(GameModelFactory)
+
+    class Meta:
+        model = GameSubscriptionModel

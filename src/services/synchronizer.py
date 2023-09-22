@@ -15,11 +15,11 @@ class SteamSynchronizer(Synchronizer):
         self._steam_repository = steam_repository
 
     async def sync(self):
-        for_create = []
-        for_update = []
         games = await self._steam_repository.get_games()
 
         for game_batch in batch(games, batch_size=300):
+            for_create = []
+            for_update = []
             names = list(map(lambda x: x.name, game_batch))
             created_games = await self._game_repository.get_games_by_names(names)
             created_games = {game.name: game for game in created_games}
@@ -31,7 +31,7 @@ class SteamSynchronizer(Synchronizer):
                     game.id = created_games[game.name].id
                     for_update.append(game)
 
-        await self._game_repository.bulk_create_games(for_create)
-        await self._game_repository.bulk_update_games(for_update)
+            await self._game_repository.bulk_create_games(for_create)
+            await self._game_repository.bulk_update_games(for_update)
 
-        return for_update
+            yield for_update

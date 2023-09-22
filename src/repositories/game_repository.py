@@ -5,6 +5,10 @@ from repositories.interfaces import BaseGameRepository
 
 
 class TortoiseGameRepository(BaseGameRepository):
+    async def get_game_by_id(self, game_id: int) -> Game:
+        game = await GameModel.get(id=game_id)
+        return GameFactory.model_to_dto(game)
+
     async def get_games_by_names(self, names: list[str]) -> list[Game]:
         games = await GameModel.filter(name__in=names).all()
         return GameFactory.models_to_dtos(games)

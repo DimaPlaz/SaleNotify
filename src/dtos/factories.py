@@ -65,3 +65,7 @@ class ClientFactory:
     @staticmethod
     def model_to_dto(model: ClientModel) -> Client:
         return Client(id=model.id, username=model.user, chat_id=model.chat_id)
+
+    @staticmethod
+    def models_to_dtos(models: Iterable[ClientModel]) -> list[Client]:
+        return [ClientFactory.model_to_dto(m) for m in models]

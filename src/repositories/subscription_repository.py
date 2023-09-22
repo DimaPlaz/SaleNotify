@@ -1,4 +1,5 @@
 from core.models import GameSubscriptionModel
+from dtos.client import Client
 from dtos.factories import SubscriptionFactory
 from dtos.game import Subscription, RemoveSubscription, CreateSubscription
 from repositories.interfaces import BaseSubscriptionRepository
