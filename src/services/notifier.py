@@ -1,6 +1,6 @@
 import asyncio
 
-from bot.bot import init_bot
+from bot.app import init_bot
 from dtos.notifications import NotifyClient
 from repositories.client_repository import TortoiseClientRepository
 from repositories.game_repository import TortoiseGameRepository
