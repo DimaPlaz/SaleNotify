@@ -16,12 +16,6 @@ app = FastAPI(
 )
 
 
-@app.on_event("startup")
-def start_event_handler():
-    setup_logging(app, settings)
-    register_tortoise(app, config=settings.TORTOISE_CONFIG)
-
-
 # middlewares
 app.add_middleware(
     CORSMiddleware,
@@ -30,6 +24,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.on_event("startup")
+def start_event_handler():
+    setup_logging(app, settings)
+    register_tortoise(app, config=settings.get_tortoise_config())
 
 
 # routers

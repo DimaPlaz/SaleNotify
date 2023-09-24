@@ -3,5 +3,5 @@ from .middleware import LoggingMiddleware
 
 
 def setup_logging(app, settings):
-    app.add_middleware(LoggingMiddleware)
+    # app.add_middleware(LoggingMiddleware)
     init_logging(settings)

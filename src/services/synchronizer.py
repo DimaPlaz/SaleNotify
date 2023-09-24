@@ -15,9 +15,7 @@ class SteamSynchronizer(Synchronizer):
         self._steam_repository = steam_repository
 
     async def sync(self):
-        games = await self._steam_repository.get_games()
-
-        for game_batch in batch(games, batch_size=300):
+        async for game_batch in self._steam_repository.get_games():
             for_create = []
             for_update = []
             names = list(map(lambda x: x.name, game_batch))

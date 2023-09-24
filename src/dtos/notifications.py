@@ -5,5 +5,5 @@ from dtos.game import Game
 
 @dataclass
 class NotifyClient:
-    client_id: int
+    chat_id: int
     game: Game

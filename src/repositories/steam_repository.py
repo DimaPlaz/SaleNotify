@@ -40,7 +40,6 @@ class SteamRepository(BaseSteamRepository):
         return games
 
     async def get_games(self) -> list[Game]:
-        games: list[Game] = []
         params = {
             "start": 0,
             "count": settings.STEAM_SEARCH_COUNT,
@@ -61,16 +60,13 @@ class SteamRepository(BaseSteamRepository):
                         continue
 
                     content = r.json()
-                    games.extend(self.__parse_response(content["results_html"]))
+                    yield self.__parse_response(content["results_html"])
                     if params["start"] >= content["total_count"]:
                         break
 
                     params["start"] += settings.STEAM_SEARCH_COUNT
                     await logger.debug(f"Выгрузил {params['start']} из {content['total_count']}")
-            except (httpx.ConnectTimeout, json.decoder.JSONDecodeError) as err:
+            except (httpx.ConnectTimeout, json.decoder.JSONDecodeError, TimeoutError) as err:
                 await logger.debug(f"Jopa blyat': {err}")
                 await sleep(10)
                 continue
-
-        return games
-

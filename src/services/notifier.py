@@ -1,6 +1,9 @@
 import asyncio
 
+from bot.bot import init_bot
 from dtos.notifications import NotifyClient
+from repositories.client_repository import TortoiseClientRepository
+from repositories.game_repository import TortoiseGameRepository
 from repositories.interfaces import BaseClientRepository, BaseGameRepository
 from services.interfaces import NotifierI
 from services.tg_client import TGClient
@@ -21,7 +24,20 @@ class NotifierService(NotifierI):
         clients = await self._client_repository.get_clients_by_game(game_id)
 
         for client in clients:
-            notify_client_dto = NotifyClient(client.id, game)
+            notify_client_dto = NotifyClient(client.chat_id, game)
             tasks.append(self._tg_client.notify_client(notify_client_dto))
 
         await asyncio.gather(*tasks)
+
+
+class NotifierServiceFactory:
+    @classmethod
+    def get_service(cls):
+        bot, dp = init_bot()
+        return NotifierService(
+            TortoiseClientRepository(),
+            TortoiseGameRepository(),
+            TGClient(
+                bot, dp
+            )
+        )
