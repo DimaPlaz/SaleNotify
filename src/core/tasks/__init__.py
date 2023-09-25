@@ -13,4 +13,4 @@ def sync_games_task():
 def notify_clients_task(game_id: int):
     import asyncio
     from core.tasks.notify import notify_clients_games
-    asyncio.run(notify_clients_games(game_id))
+    asyncio.create_task(notify_clients_games(game_id))

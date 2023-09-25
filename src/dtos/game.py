@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from aiogram.types import InlineKeyboardMarkup
+
 
 @dataclass
 class Game:
@@ -42,3 +44,10 @@ class CreateSubscription(Subscription):
 @dataclass
 class RemoveSubscription(Subscription):
     ...
+
+
+@dataclass
+class NotifyGameMessage:
+    text: str
+    image_url: str
+    buttons: InlineKeyboardMarkup

@@ -27,12 +27,14 @@ class SteamRepository(BaseSteamRepository):
             title = block.find_all("span", class_="title")[0]
             discount_block = block.find_all("div", class_="discount_block")
             image = block.find_all("img")[0]
+            image_link: str = image["srcset"].split(" ")[-2].split("?")[0]
+            image_link = image_link[:image_link.rfind("/")] + "/header.jpg"
 
             games.append(
                 Game(
                     name=title.text,
                     discount=int(discount_block[0].get("data-discount")) if discount_block else 0,
-                    image_link=image["srcset"].split(" ")[-2].split("?")[0],
+                    image_link=image_link,
                     store_link=block["href"].split("?")[0],
                 )
             )

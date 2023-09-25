@@ -1,11 +1,8 @@
-from aiogram.types import (InlineKeyboardMarkup,
-                           InlineKeyboardButton,
-                           ReplyKeyboardMarkup,
+import emoji
+from aiogram.types import (ReplyKeyboardMarkup,
                            KeyboardButton)
 
-inline_keyboard = [[InlineKeyboardButton(text="search", callback_data="search")]]
-base_markup = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
-keyboard = [[KeyboardButton(text="search")]]
+keyboard = [[KeyboardButton(text=emoji.emojize("search"))]]
 menu_commands = ReplyKeyboardMarkup(
     keyboard=keyboard,
     resize_keyboard=True

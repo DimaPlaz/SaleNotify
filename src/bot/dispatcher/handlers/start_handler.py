@@ -2,6 +2,7 @@ from aiogram.types import Message
 from aiogram.utils.markdown import hbold
 
 from bot.client import APIClientFactory
+from bot.dispatcher.constants import start_message
 from bot.dispatcher.markups import menu_commands
 
 
@@ -13,5 +14,4 @@ async def command_start_handler(message: Message) -> None:
     username = message.from_user.username
     api_client = await APIClientFactory.get_client()
     await api_client.register_client(chat_id, username)
-    await message.answer(f"Hello, {hbold(message.from_user.full_name)}!",
-                         reply_markup=menu_commands)
+    await message.answer(start_message, reply_markup=menu_commands)

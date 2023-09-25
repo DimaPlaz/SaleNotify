@@ -86,10 +86,28 @@ class APIClient(APIClientI):
             assert response_json["success"]
 
     async def subscribe_to_game(self, chat_id: int, game_id: int):
-        pass
+        client_id = await self._cache_storage.get(chat_id)
+        body = {
+            "client_id": client_id,
+            "game_id": game_id
+        }
+        async with self.__client() as client:
+            response: Response = await client.post("api/v1/subscription/subscribe", json=body)
+            response.raise_for_status()
+            response_json = response.json()
+            assert response_json["success"]
 
     async def unsubscribe_from_game(self, chat_id: int, game_id: int):
-        pass
+        client_id = await self._cache_storage.get(chat_id)
+        body = {
+            "client_id": client_id,
+            "game_id": game_id
+        }
+        async with self.__client() as client:
+            response: Response = await client.post("api/v1/subscription/unsubscribe", json=body)
+            response.raise_for_status()
+            response_json = response.json()
+            assert response_json["success"]
 
 
 class APIClientFactory:

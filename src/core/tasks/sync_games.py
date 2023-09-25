@@ -7,4 +7,4 @@ async def sync_games():
     service = SteamSynchronizer(SteamRepository(), TortoiseGameRepository())
     async for updates in service.sync():
         for game in updates:
-            notify_clients_task.appply(game.id)
+            notify_clients_task.apply(args=[game.id])

@@ -1,3 +1,4 @@
+import emoji
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from bot.dtos import GameMessage
@@ -10,8 +11,12 @@ class SearchGamesMessageFactory:
         text = (f"Name: {game.name}\n"
                 f"Discount: {game.discount}%")
         inline_keyboard = [[
-            InlineKeyboardButton(text="subscribe", callback_data=f"subscribe-{game.id}"),
-            InlineKeyboardButton(text="steam", url=game.store_link),
+            InlineKeyboardButton(
+                text=emoji.emojize("subscribe:check_mark_button:"),
+                callback_data=f"subscribe-{game.id}"),
+            InlineKeyboardButton(
+                text=emoji.emojize("steam:gear:"),
+                url=game.store_link),
         ]]
         buttons = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
         return GameMessage(

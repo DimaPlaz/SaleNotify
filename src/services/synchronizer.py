@@ -1,7 +1,6 @@
 from logger.logger import get_logger
 from repositories.interfaces import BaseSteamRepository, BaseGameRepository
 from services.interfaces import Synchronizer
-from services.utils import batch
 
 
 logger = get_logger()
@@ -15,7 +14,7 @@ class SteamSynchronizer(Synchronizer):
         self._steam_repository = steam_repository
 
     async def sync(self):
-        async for game_batch in self._steam_repository.get_games():
+        async for game_batch in self._steam_repository.get_games():  # noqa
             for_create = []
             for_update = []
             names = list(map(lambda x: x.name, game_batch))

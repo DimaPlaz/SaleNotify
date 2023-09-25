@@ -3,6 +3,7 @@ from aiogram.filters import CommandStart, StateFilter
 
 from bot.dispatcher.handlers.search_handler import start_search_games_handler, search_games_handler
 from bot.dispatcher.handlers.start_handler import command_start_handler
+from bot.dispatcher.handlers.subscription_handler import subscribe_handler, unsubscribe_handler
 from bot.states import GameSearchState
 from config import settings
 
@@ -11,6 +12,8 @@ async def init_handlers(dp: Dispatcher):
     dp.message(CommandStart())(command_start_handler)
     dp.message(F.text == "search")(start_search_games_handler)
     dp.message(StateFilter(GameSearchState.input))(search_games_handler)
+    dp.callback_query(F.data.startswith("subscribe-"))(subscribe_handler)
+    dp.callback_query(F.data.startswith("unsubscribe-"))(unsubscribe_handler)
 
 
 async def start_bot(dispatcher: Dispatcher, bot: Bot,  **kwargs):

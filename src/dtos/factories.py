@@ -52,8 +52,8 @@ class SubscriptionFactory:
     @staticmethod
     def model_to_dto(model: GameSubscriptionModel) -> Subscription:
         return Subscription(
-            client_id=model.client.id,
-            game_id=model.game.id
+            client_id=model.client_id,  # noqa
+            game_id=model.game_id       # noqa
         )
 
     @staticmethod
