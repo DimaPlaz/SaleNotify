@@ -7,7 +7,7 @@ from httpx import Response
 from broker.cache import CacheStorageI, AsyncRedisCache
 from config import settings
 from core.api.v1.schemas import ClientID
-from dtos.game import Game
+from bot.dtos import Game
 from logger.logger import get_logger
 
 logger = get_logger()
@@ -24,6 +24,14 @@ class APIClientI(ABC):
 
     @abstractmethod
     async def unregister_client(self, chat_id: int):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def subscribe_to_game(self, chat_id: int, game_id: int):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def unsubscribe_from_game(self, chat_id: int, game_id: int):
         raise NotImplementedError
 
 
@@ -77,6 +85,12 @@ class APIClient(APIClientI):
             response_json = response.json()
             assert response_json["success"]
 
+    async def subscribe_to_game(self, chat_id: int, game_id: int):
+        pass
+
+    async def unsubscribe_from_game(self, chat_id: int, game_id: int):
+        pass
+
 
 class APIClientFactory:
     @classmethod
@@ -86,4 +100,3 @@ class APIClientFactory:
             settings.SELF_URL,
             storage
         )
-

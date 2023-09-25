@@ -1,16 +1,10 @@
-import asyncio
-
 from aiogram import Bot, Dispatcher
-from aiogram.contrib.fsm_storage.redis import RedisStorage2
-from aiogram.dispatcher.filters import CommandStart
+from aiogram.fsm.storage.redis import RedisStorage
 
-from bot.dispatcher.handlers.start_handler import command_start_handler
+from broker.redis_client import redis
 from config import settings
 
 
 bot = Bot(token=settings.TELEGRAM_BOT_TOKEN)
-storage = RedisStorage2(host=settings.REDIS_HOST, port=settings.REDIS_PORT)
+storage = RedisStorage(redis)
 dp = Dispatcher(bot=bot, storage=storage)
-
-
-dp.register_message_handler(command_start_handler, CommandStart())

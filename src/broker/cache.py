@@ -2,8 +2,6 @@ from abc import ABC, abstractmethod
 
 from redis.asyncio import BlockingConnectionPool, Redis
 
-from config import settings
-
 
 class CacheStorageI(ABC):
     @abstractmethod
@@ -27,7 +25,7 @@ class AsyncRedisCache(CacheStorageI):
         return self.init().__await__()
 
     async def init(self):
-        self._pool = await Redis(connection_pool=self.__pool)  # noqa
+        self._pool = await Redis(connection_pool=self.__pool, db=5)  # noqa
         return self
 
     async def set(self, key, value):
