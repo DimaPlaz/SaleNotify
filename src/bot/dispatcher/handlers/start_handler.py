@@ -1,5 +1,4 @@
 from aiogram.types import Message
-from aiogram.utils.markdown import hbold
 
 from bot.client import APIClientFactory
 from bot.dispatcher.constants import start_message

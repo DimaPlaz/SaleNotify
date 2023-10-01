@@ -10,7 +10,8 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
 );
 CREATE TABLE IF NOT EXISTS "games" (
     "id" SERIAL NOT NULL PRIMARY KEY,
-    "name" VARCHAR(512) NOT NULL UNIQUE,
+    "steam_id" VARCHAR(32) NOT NULL UNIQUE,
+    "name" VARCHAR(512) NOT NULL,
     "discount" SMALLINT NOT NULL  DEFAULT 0,
     "image_link" VARCHAR(512) NOT NULL,
     "store_link" VARCHAR(512) NOT NULL UNIQUE

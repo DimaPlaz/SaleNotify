@@ -46,6 +46,7 @@ class UnsubscribeRequest(BaseSubscriptionRequest):
 
 class BaseGameSchema(BaseModel):
     id: int
+    steam_id: str
     name: str
     discount: int
     image_link: str

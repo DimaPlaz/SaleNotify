@@ -1,8 +1,10 @@
 import json
+import re
 from asyncio import sleep
 
 from bs4 import BeautifulSoup
 import httpx
+from httpx import ReadTimeout
 
 from config import settings
 from dtos.game import Game
@@ -24,18 +26,35 @@ class SteamRepository(BaseSteamRepository):
         bs = BeautifulSoup(content)
 
         for block in bs.find_all("a", class_="search_result_row"):
-            title = block.find_all("span", class_="title")[0]
+            title = block.find_all("span", class_="title")[0].text
             discount_block = block.find_all("div", class_="discount_block")
             image = block.find_all("img")[0]
             image_link: str = image["srcset"].split(" ")[-2].split("?")[0]
             image_link = image_link[:image_link.rfind("/")] + "/header.jpg"
+            store_link = block["href"].split("?")[0]
+            steam_id = block["data-ds-itemkey"]
+            discount = int(discount_block[0].get("data-discount")) if discount_block else 0
+            search_field = re.sub("[^A-Za-z0-9]+", "", title).lower()
+            span = block.find('span', class_='search_review_summary')
+            try:
+                data_tooltip_html = span['data-tooltip-html']
+                review_count = int(re
+                                   .compile(r"(?<=of the )[\d,]+")
+                                   .search(data_tooltip_html)
+                                   .group()
+                                   .replace(",", ""))
+            except TypeError:
+                review_count = 0
 
             games.append(
                 Game(
-                    name=title.text,
-                    discount=int(discount_block[0].get("data-discount")) if discount_block else 0,
+                    name=title,
+                    search_field=search_field,
+                    review_count=review_count,
+                    discount=discount,
                     image_link=image_link,
-                    store_link=block["href"].split("?")[0],
+                    store_link=store_link,
+                    steam_id=steam_id
                 )
             )
 
@@ -68,7 +87,10 @@ class SteamRepository(BaseSteamRepository):
 
                     params["start"] += settings.STEAM_SEARCH_COUNT
                     await logger.debug(f"Выгрузил {params['start']} из {content['total_count']}")
-            except (httpx.ConnectTimeout, json.decoder.JSONDecodeError, TimeoutError) as err:
+            except (httpx.ConnectTimeout,
+                    json.decoder.JSONDecodeError,
+                    TimeoutError,
+                    ReadTimeout) as err:
                 await logger.debug(f"Jopa blyat': {err}")
                 await sleep(10)
                 continue

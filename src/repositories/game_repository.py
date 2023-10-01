@@ -5,6 +5,10 @@ from repositories.interfaces import BaseGameRepository
 
 
 class TortoiseGameRepository(BaseGameRepository):
+    async def get_games_by_steam_ids(self, steam_ids: list[str]) -> list[Game]:
+        games = await GameModel.filter(steam_id__in=steam_ids).all()
+        return GameFactory.models_to_dtos(games)
+
     async def get_game_by_id(self, game_id: int) -> Game:
         game = await GameModel.get(id=game_id)
         return GameFactory.model_to_dto(game)
@@ -23,8 +27,17 @@ class TortoiseGameRepository(BaseGameRepository):
 
     async def bulk_update_games(self, update_games: list[UpdateGame]):
         games = GameFactory.dtos_to_models(update_games)
-        await GameModel.bulk_update(games, ["discount"], batch_size=300)
+        fields = ["name",
+                  "store_link",
+                  "image_link",
+                  "search_field",
+                  "review_count",
+                  "discount"]
+        await GameModel.bulk_update(games, fields=fields, batch_size=300)
 
     async def search_by_keyword(self, keyword: str) -> list[Game]:
-        games = await GameModel.filter(name__icontains=keyword)
+        games = await (GameModel
+                       .filter(search_field__startswith=keyword)
+                       .order_by("-review_count")
+                       .limit(20))
         return GameFactory.models_to_dtos(games)

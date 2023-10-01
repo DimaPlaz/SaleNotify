@@ -6,6 +6,7 @@ from aiogram.types import InlineKeyboardMarkup
 
 @dataclass
 class Game:
+    steam_id: str
     name: str
     discount: int
     image_link: str

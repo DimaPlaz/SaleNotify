@@ -18,6 +18,10 @@ class BaseGameRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def get_games_by_steam_ids(self, steam_ids: list[str]) -> list[Game]:
+        raise NotImplementedError
+
+    @abstractmethod
     async def bulk_create_games(self, create_games: list[CreateGame]):
         raise NotImplementedError
 

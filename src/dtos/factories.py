@@ -10,7 +10,10 @@ class GameFactory:
     def dto_to_model(game: Game) -> GameModel:
         return GameModel(
             id=game.id,
+            steam_id=game.steam_id,
             name=game.name,
+            search_field=game.search_field,
+            review_count=game.review_count,
             discount=game.discount,
             image_link=game.image_link,
             store_link=game.store_link
@@ -20,7 +23,10 @@ class GameFactory:
     def model_to_dto(game: GameModel) -> Game:
         return Game(
             id=game.id,
+            steam_id=game.steam_id,
             name=game.name,
+            search_field=game.search_field,
+            review_count=game.review_count,
             discount=game.discount,
             image_link=game.image_link,
             store_link=game.store_link
@@ -29,7 +35,10 @@ class GameFactory:
     @staticmethod
     def create_dto_to_model(create_game: CreateGame) -> GameModel:
         return GameModel(
+            steam_id=create_game.steam_id,
             name=create_game.name,
+            search_field=create_game.search_field,
+            review_count=create_game.review_count,
             discount=create_game.discount,
             image_link=create_game.image_link,
             store_link=create_game.store_link

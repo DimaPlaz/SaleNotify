@@ -10,15 +10,21 @@ class Game:
     discount: int
     image_link: str
     store_link: str
+    steam_id: str
+    search_field: str
+    review_count: int
     id: Optional[int] = None
 
 
 @dataclass
 class CreateGame:
+    steam_id: str
     name: str
     discount: int
     image_link: str
     store_link: str
+    search_field: str
+    review_count: int
 
 
 @dataclass
