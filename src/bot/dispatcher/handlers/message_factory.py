@@ -51,6 +51,21 @@ class GamesSubscribedMessageFactory:
         )
 
     @classmethod
+    def reverse_inline_keyboard(cls, markup: InlineKeyboardMarkup, game_id: int) -> InlineKeyboardMarkup:
+        if markup.inline_keyboard[0][0].text.startswith("subscribe"):
+            markup.inline_keyboard[0][0] = InlineKeyboardButton(
+                text=emoji.emojize("unsubscribe:cross_mark:"),
+                callback_data=f"unsubscribe-{game_id}"
+            )
+        else:
+            markup.inline_keyboard[0][0] = InlineKeyboardButton(
+                text=emoji.emojize("subscribe:check_mark_button:"),
+                callback_data=f"subscribe-{game_id}"
+            )
+        return markup
+
+
+    @classmethod
     def games_to_messages(cls, games: list[Game]) -> list[GameMessage]:
         return [cls.game_to_message(g) for g in games]
 

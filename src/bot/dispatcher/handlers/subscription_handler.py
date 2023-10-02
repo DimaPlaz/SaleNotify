@@ -1,28 +1,47 @@
-import emoji
 from aiogram.types import CallbackQuery, Message, URLInputFile
 
 from bot.client import APIClientFactory
-from bot.dispatcher.constants import subscribed_message, unsubscribed_message, no_subscriptions, deleted_subs, \
-    canceled_deleting_subs
-from bot.dispatcher.handlers.message_factory import GamesSubscribedMessageFactory, DeleteSubsMessageFactory
+from bot.dispatcher.constants import (subscribed_message,
+                                      unsubscribed_message,
+                                      no_subscriptions,
+                                      deleted_subs,
+                                      canceled_deleting_subs)
+from bot.dispatcher.handlers.message_factory import (GamesSubscribedMessageFactory,
+                                                     DeleteSubsMessageFactory)
 
 
 async def subscribe_handler(callback: CallbackQuery) -> None:
-    game_id = callback.data.split("-")[-1]
+    game_id = int(callback.data.split("-")[-1])
     chat_id = callback.from_user.id
     api_client = await APIClientFactory.get_client()
     await api_client.subscribe_to_game(chat_id, game_id)
+    new_inline_keyboard = GamesSubscribedMessageFactory.reverse_inline_keyboard(
+        callback.message.reply_markup,
+        game_id
+    )
+    await callback.bot.edit_message_reply_markup(
+        chat_id,
+        callback.message.message_id,
+        reply_markup=new_inline_keyboard
+    )
     await callback.answer(text=subscribed_message, show_alert=True)
-    await callback.bot.delete_message(chat_id, callback.message.message_id)
 
 
 async def unsubscribe_handler(callback: CallbackQuery) -> None:
-    game_id = callback.data.split("-")[-1]
+    game_id = int(callback.data.split("-")[-1])
     chat_id = callback.from_user.id
     api_client = await APIClientFactory.get_client()
     await api_client.unsubscribe_from_game(chat_id, game_id)
+    new_inline_keyboard = GamesSubscribedMessageFactory.reverse_inline_keyboard(
+        callback.message.reply_markup,
+        game_id
+    )
+    await callback.bot.edit_message_reply_markup(
+        chat_id,
+        callback.message.message_id,
+        reply_markup=new_inline_keyboard
+    )
     await callback.answer(text=unsubscribed_message, show_alert=True)
-    await callback.bot.delete_message(chat_id, callback.message.message_id)
 
 
 async def my_subscriptions_handler(message: Message) -> None:
