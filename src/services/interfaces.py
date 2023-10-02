@@ -29,6 +29,14 @@ class SubscriptionServiceI(ABC):
     async def unsubscribe(self, remove_subscription: RemoveSubscription):
         raise NotImplementedError
 
+    @abstractmethod
+    async def get_games_subscribed(self, client_id: int):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def delete_games_subscribed(self, client_id: int):
+        raise NotImplementedError
+
 
 class GamesServiceI(ABC):
     @abstractmethod

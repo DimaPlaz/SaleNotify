@@ -70,6 +70,7 @@ class SteamRepository(BaseSteamRepository):
             "category1": 998,
             "hidef2p": 1,
             "ndl": 1,
+            "ignore_preferences": 1
         }
         while True:
             try:

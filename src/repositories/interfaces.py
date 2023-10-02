@@ -54,6 +54,10 @@ class BaseSubscriptionRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def get_games_subscribed(self, client_id: int) -> list[Game]:
+        raise NotImplementedError
+
+    @abstractmethod
     async def delete_client_subscriptions(self, client_id: int):
         raise NotImplementedError
 

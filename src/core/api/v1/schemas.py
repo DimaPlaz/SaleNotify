@@ -36,6 +36,18 @@ class BaseSubscriptionRequest(BaseModel):
     game_id: int
 
 
+class BaseSubscriptionListRequest(BaseModel):
+    client_id: int
+
+
+class GetGamesSubscribed(BaseSubscriptionListRequest):
+    ...
+
+
+class DeleteGamesSubscribed(BaseSubscriptionListRequest):
+    ...
+
+
 class SubscribeRequest(BaseSubscriptionRequest):
     ...
 
@@ -60,3 +72,7 @@ class SearchGamesRequest(BaseModel):
 class SearchGamesResponse(BaseResponse):
     games: Optional[list[BaseGameSchema]] = None
     message: Optional[str] = None
+
+
+class GamesResponse(BaseResponse):
+    games: Optional[list[BaseGameSchema]] = None

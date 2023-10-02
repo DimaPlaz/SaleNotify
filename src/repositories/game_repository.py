@@ -37,7 +37,7 @@ class TortoiseGameRepository(BaseGameRepository):
 
     async def search_by_keyword(self, keyword: str) -> list[Game]:
         games = await (GameModel
-                       .filter(search_field__startswith=keyword)
+                       .filter(search_field__icontains=keyword)
                        .order_by("-review_count")
-                       .limit(20))
+                       .limit(5))
         return GameFactory.models_to_dtos(games)

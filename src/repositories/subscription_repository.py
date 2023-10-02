@@ -1,7 +1,7 @@
-from core.models import GameSubscriptionModel
+from core.models import GameSubscriptionModel, GameModel
 from dtos.client import Client
-from dtos.factories import SubscriptionFactory
-from dtos.game import Subscription, RemoveSubscription, CreateSubscription
+from dtos.factories import SubscriptionFactory, GameFactory
+from dtos.game import Subscription, RemoveSubscription, CreateSubscription, Game
 from repositories.interfaces import BaseSubscriptionRepository
 
 
@@ -16,6 +16,10 @@ class TortoiseSubscriptionRepository(BaseSubscriptionRepository):
     async def get_client_subscriptions(self, client_id: int) -> list[Subscription]:
         models = await GameSubscriptionModel.filter(client_id=client_id).all()
         return SubscriptionFactory.models_to_dtos(models)
+
+    async def get_games_subscribed(self, client_id: int) -> list[Game]:
+        models = await GameModel.filter(subscriptions__client_id=client_id).all()
+        return GameFactory.models_to_dtos(models)
 
     async def delete_client_subscriptions(self, client_id: int):
         await GameSubscriptionModel.filter(client_id=client_id).delete()

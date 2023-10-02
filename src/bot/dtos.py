@@ -15,7 +15,11 @@ class Game:
 
 
 @dataclass
-class GameMessage:
+class BaseMessage:
     text: str
-    image_url: str
     buttons: InlineKeyboardMarkup
+
+
+@dataclass
+class GameMessage(BaseMessage):
+    image_url: str

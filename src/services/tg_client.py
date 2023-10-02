@@ -7,15 +7,15 @@ from dtos.game import Game, NotifyGameMessage
 from dtos.notifications import NotifyClient
 
 
-class SearchGamesMessageFactory:
+class NotifyGamesMessageFactory:
     @classmethod
     def game_to_message(cls, game: Game) -> NotifyGameMessage:
-        text = emoji.emojize(f":exclamation: "
+        text = emoji.emojize(f":red_exclamation_mark: "
                              f"Discount for the {game.name} game "
                              f"has been updated: {game.discount}%")
         inline_keyboard = [[
             InlineKeyboardButton(
-                text=emoji.emojize("unsubscribe:x:"),
+                text=emoji.emojize("unsubscribe:cross_mark:"),
                 callback_data=f"unsubscribe-{game.id}"),
             InlineKeyboardButton(
                 text=emoji.emojize("steam:gear:"),
@@ -35,7 +35,7 @@ class TGClient:
         self._bot = bot
 
     async def notify_client(self, notify_client: NotifyClient):
-        game_message = SearchGamesMessageFactory.game_to_message(notify_client.game)
+        game_message = NotifyGamesMessageFactory.game_to_message(notify_client.game)
         photo = URLInputFile(url=game_message.image_url)
         await self._bot.send_photo(
             notify_client.chat_id,
