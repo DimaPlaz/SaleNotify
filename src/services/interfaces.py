@@ -43,6 +43,10 @@ class GamesServiceI(ABC):
     async def search_by_keyword(self, keyword: str) -> list[Game]:
         raise NotImplementedError
 
+    @abstractmethod
+    async def get_top_by_discount(self) -> list[Game]:
+        raise NotImplementedError
+
 
 class NotifierI(ABC):
     @abstractmethod

@@ -42,6 +42,10 @@ class APIClientI(ABC):
     async def delete_all_subscriptions(self, chat_id: int):
         raise NotImplementedError
 
+    @abstractmethod
+    async def get_top_games_by_discount(self) -> list[Game]:
+        raise NotImplementedError
+
 
 class APIClient(APIClientI):
     def __init__(self,
@@ -140,6 +144,14 @@ class APIClient(APIClientI):
             response.raise_for_status()
             response_json = response.json()
             assert response_json["success"]
+
+    async def get_top_games_by_discount(self) -> list[Game]:
+        async with self.__client() as client:
+            response: Response = await client.get("api/v1/games/top")
+            response.raise_for_status()
+
+            search_result = response.json()["games"]
+            return [Game(**g) for g in search_result]
 
 
 class APIClientFactory:

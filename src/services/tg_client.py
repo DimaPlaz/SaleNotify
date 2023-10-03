@@ -15,10 +15,10 @@ class NotifyGamesMessageFactory:
                              f"has been updated: {game.discount}%")
         inline_keyboard = [[
             InlineKeyboardButton(
-                text=emoji.emojize("unsubscribe:cross_mark:"),
+                text=emoji.emojize(":cross_mark: unsubscribe"),
                 callback_data=f"unsubscribe-{game.id}"),
             InlineKeyboardButton(
-                text=emoji.emojize("steam:gear:"),
+                text=emoji.emojize(":gear: steam"),
                 url=game.store_link),
         ]]
         buttons = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)

@@ -41,3 +41,8 @@ class TortoiseGameRepository(BaseGameRepository):
                        .order_by("-review_count")
                        .limit(5))
         return GameFactory.models_to_dtos(games)
+
+    async def get_top_by_discount(self) -> list[Game]:
+        games = await GameModel.filter(discount__gte=70).order_by("-review_count").limit(20)
+        return GameFactory.models_to_dtos(games)
+

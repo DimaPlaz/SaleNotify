@@ -27,3 +27,14 @@ async def search_games_handler(message: Message, state: FSMContext) -> None:
                                    reply_markup=game_message.buttons)
     if not game_messages:
         await message.answer(text=nothing_was_found)
+
+
+async def top_games_by_discount_handler(message: Message):
+    api_client = await APIClientFactory.get_client()
+    games = await api_client.get_top_games_by_discount()
+    game_messages = SearchGamesMessageFactory.games_to_messages(games)
+    for game_message in game_messages:
+        photo = URLInputFile(url=game_message.image_url)
+        await message.answer_photo(photo=photo,
+                                   caption=game_message.text,
+                                   reply_markup=game_message.buttons)

@@ -11,6 +11,9 @@ class GamesService(GamesServiceI):
     async def search_by_keyword(self, keyword: str) -> list[Game]:
         return await self._game_repository.search_by_keyword(keyword)
 
+    async def get_top_by_discount(self) -> list[Game]:
+        return await self._game_repository.get_top_by_discount()
+
 
 class GamesServiceFactory:
     @classmethod

@@ -12,10 +12,10 @@ class SearchGamesMessageFactory:
                 f"Discount: {game.discount}%")
         inline_keyboard = [[
             InlineKeyboardButton(
-                text=emoji.emojize("subscribe:check_mark_button:"),
+                text=emoji.emojize(":check_mark_button: subscribe"),
                 callback_data=f"subscribe-{game.id}"),
             InlineKeyboardButton(
-                text=emoji.emojize("steam:gear:"),
+                text=emoji.emojize(":gear: steam"),
                 url=game.store_link),
         ]]
         buttons = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
@@ -37,10 +37,10 @@ class GamesSubscribedMessageFactory:
                 f"Discount: {game.discount}%")
         inline_keyboard = [[
             InlineKeyboardButton(
-                text=emoji.emojize("unsubscribe:cross_mark:"),
+                text=emoji.emojize(":cross_mark: unsubscribe"),
                 callback_data=f"unsubscribe-{game.id}"),
             InlineKeyboardButton(
-                text=emoji.emojize("steam:gear:"),
+                text=emoji.emojize(":gear: steam"),
                 url=game.store_link),
         ]]
         buttons = InlineKeyboardMarkup(inline_keyboard=inline_keyboard)
@@ -52,18 +52,17 @@ class GamesSubscribedMessageFactory:
 
     @classmethod
     def reverse_inline_keyboard(cls, markup: InlineKeyboardMarkup, game_id: int) -> InlineKeyboardMarkup:
-        if markup.inline_keyboard[0][0].text.startswith("subscribe"):
+        if markup.inline_keyboard[0][0].text.endswith(" unsubscribe"):
             markup.inline_keyboard[0][0] = InlineKeyboardButton(
-                text=emoji.emojize("unsubscribe:cross_mark:"),
-                callback_data=f"unsubscribe-{game_id}"
-            )
-        else:
-            markup.inline_keyboard[0][0] = InlineKeyboardButton(
-                text=emoji.emojize("subscribe:check_mark_button:"),
+                text=emoji.emojize(":check_mark_button: subscribe"),
                 callback_data=f"subscribe-{game_id}"
             )
+        elif markup.inline_keyboard[0][0].text.endswith(" subscribe"):
+            markup.inline_keyboard[0][0] = InlineKeyboardButton(
+                text=emoji.emojize(":cross_mark: unsubscribe"),
+                callback_data=f"unsubscribe-{game_id}"
+            )
         return markup
-
 
     @classmethod
     def games_to_messages(cls, games: list[Game]) -> list[GameMessage]:
