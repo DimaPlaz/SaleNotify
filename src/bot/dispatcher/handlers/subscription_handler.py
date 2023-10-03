@@ -1,3 +1,4 @@
+from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message, URLInputFile
 
 from bot.client import APIClientFactory
@@ -10,6 +11,10 @@ from bot.dispatcher.handlers.message_factory import (GamesSubscribedMessageFacto
                                                      DeleteSubsMessageFactory)
 
 
+subscription_router = Router()
+
+
+@subscription_router.callback_query(F.data.startswith("subscribe-"))
 async def subscribe_handler(callback: CallbackQuery) -> None:
     game_id = int(callback.data.split("-")[-1])
     chat_id = callback.from_user.id
@@ -27,6 +32,7 @@ async def subscribe_handler(callback: CallbackQuery) -> None:
     await callback.answer(text=subscribed_message, show_alert=True)
 
 
+@subscription_router.callback_query(F.data.startswith("unsubscribe-"))
 async def unsubscribe_handler(callback: CallbackQuery) -> None:
     game_id = int(callback.data.split("-")[-1])
     chat_id = callback.from_user.id
@@ -44,6 +50,7 @@ async def unsubscribe_handler(callback: CallbackQuery) -> None:
     await callback.answer(text=unsubscribed_message, show_alert=True)
 
 
+@subscription_router.message(F.text == "my subscriptions")
 async def my_subscriptions_handler(message: Message) -> None:
     chat_id = message.from_user.id
     api_client = await APIClientFactory.get_client()
@@ -58,6 +65,7 @@ async def my_subscriptions_handler(message: Message) -> None:
         await message.answer(text=no_subscriptions)
 
 
+@subscription_router.message(F.text == "delete all my subscriptions")
 async def delete_my_subscriptions_handler(message: Message) -> None:
     chat_id = message.from_user.id
     api_client = await APIClientFactory.get_client()
@@ -66,6 +74,7 @@ async def delete_my_subscriptions_handler(message: Message) -> None:
     await message.answer(text=msg.text, reply_markup=msg.buttons)
 
 
+@subscription_router.callback_query(F.data.startswith("confirm-"))
 async def confirm_delete_my_subscriptions_handler(callback: CallbackQuery) -> None:
     msg_id = int(callback.data.split("-")[-1])
     chat_id = callback.from_user.id
@@ -76,6 +85,7 @@ async def confirm_delete_my_subscriptions_handler(callback: CallbackQuery) -> No
     await callback.answer(text=deleted_subs, show_alert=True)
 
 
+@subscription_router.callback_query(F.data.startswith("cancel-"))
 async def cancel_delete_my_subscriptions_handler(callback: CallbackQuery) -> None:
     msg_id = int(callback.data.split("-")[-1])
     chat_id = callback.from_user.id
