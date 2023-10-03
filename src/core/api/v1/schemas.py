@@ -19,6 +19,14 @@ class ClientSchema(BaseClientSchema):
     id: int
 
 
+class GetClientResponse(BaseResponse):
+    client: ClientSchema | None
+
+
+class GetClientSchema(BaseModel):
+    chat_id: int
+
+
 class RegistrationResponse(BaseResponse):
     client: Optional[ClientSchema] = None
 

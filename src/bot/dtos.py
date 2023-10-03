@@ -23,3 +23,10 @@ class BaseMessage:
 @dataclass
 class GameMessage(BaseMessage):
     image_url: str
+
+
+@dataclass
+class Client:
+    chat_id: int
+    id: int
+    username: Optional[str] = None

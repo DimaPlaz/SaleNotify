@@ -72,5 +72,9 @@ class BaseClientRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def get_client_by_chat_id(self, chat_id: int) -> Client | None:
+        raise NotImplementedError
+
+    @abstractmethod
     async def get_clients_by_game(self, game_id: int) -> list[Client]:
         raise NotImplementedError

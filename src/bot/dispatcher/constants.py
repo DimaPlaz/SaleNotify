@@ -16,3 +16,4 @@ no_subscriptions = emoji.emojize("You don't have any subscriptions :disappointed
 delete_all_subs = emoji.emojize("Are you sure you want to delete all your subscriptions :disappointed_face:")
 deleted_subs = emoji.emojize("Subscriptions successfully deleted :like:")
 canceled_deleting_subs = emoji.emojize("Subscriptions deletion canceled :like:")
+unregistered_user = "First you need to click on the /start command"

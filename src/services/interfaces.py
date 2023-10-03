@@ -19,6 +19,10 @@ class ClientServiceI(ABC):
     async def unregister(self, client_id: int):
         raise NotImplementedError
 
+    @abstractmethod
+    async def get_info(self, chat_id: int):
+        raise NotImplementedError
+
 
 class SubscriptionServiceI(ABC):
     @abstractmethod

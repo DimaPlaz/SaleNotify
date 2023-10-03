@@ -9,7 +9,7 @@ class CacheStorageI(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get(self, key: str | int) -> str | int:
+    async def get(self, key: str | int) -> str | int | None:
         raise NotImplementedError
 
 

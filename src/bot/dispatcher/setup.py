@@ -1,17 +1,25 @@
 from aiogram import Dispatcher, Bot, F
 from aiogram.filters import CommandStart, StateFilter
 
+from bot.client import APIClientFactory
 from bot.dispatcher.handlers.search_handler import start_search_games_handler, search_games_handler, \
     top_games_by_discount_handler
 from bot.dispatcher.handlers.start_handler import command_start_handler
 from bot.dispatcher.handlers.subscription_handler import subscribe_handler, unsubscribe_handler, \
     confirm_delete_my_subscriptions_handler, delete_my_subscriptions_handler, cancel_delete_my_subscriptions_handler, \
     my_subscriptions_handler
+from bot.dispatcher.middlewares.auth import AuthMessageMiddleware
 from bot.states import GameSearchState, DeleteSubsState
+from broker.cache import AsyncRedisCache
 from config import settings
 
 
 async def init_handlers(dp: Dispatcher):
+    storage = await AsyncRedisCache()
+    client = await APIClientFactory.get_client()
+    dp.message.middleware(AuthMessageMiddleware(client, storage))
+    dp.callback_query.middleware(AuthMessageMiddleware(client, storage))
+
     dp.message(CommandStart())(command_start_handler)
     dp.message(F.text == "delete all my subscriptions")(delete_my_subscriptions_handler)
     dp.message(F.text == "my subscriptions")(my_subscriptions_handler)

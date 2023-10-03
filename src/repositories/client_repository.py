@@ -15,3 +15,9 @@ class TortoiseClientRepository(BaseClientRepository):
     async def get_clients_by_game(self, game_id: int) -> list[Client]:
         qs = await ClientModel.filter(subscriptions__game_id=game_id)
         return ClientFactory.models_to_dtos(qs)
+
+    async def get_client_by_chat_id(self, chat_id: int) -> Client | None:
+        client = await ClientModel.filter(chat_id=chat_id).first()
+        if client:
+            return ClientFactory.model_to_dto(client)
+

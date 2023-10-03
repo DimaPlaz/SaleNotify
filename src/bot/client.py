@@ -7,7 +7,7 @@ from httpx import Response
 from broker.cache import CacheStorageI, AsyncRedisCache
 from config import settings
 from core.api.v1.schemas import ClientID
-from bot.dtos import Game
+from bot.dtos import Game, Client
 from logger.logger import get_logger
 
 logger = get_logger()
@@ -44,6 +44,10 @@ class APIClientI(ABC):
 
     @abstractmethod
     async def get_top_games_by_discount(self) -> list[Game]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_client_by_chat_id(self, chat_id: int) -> Client | None:
         raise NotImplementedError
 
 
@@ -152,6 +156,17 @@ class APIClient(APIClientI):
 
             search_result = response.json()["games"]
             return [Game(**g) for g in search_result]
+
+    async def get_client_by_chat_id(self, chat_id: int) -> Client | None:
+        params = {
+            "chat_id": chat_id
+        }
+        async with self.__client() as client:
+            response: Response = await client.get("api/v1/client/info", params=params)
+            response.raise_for_status()
+            response_json = response.json()
+            if response_json["success"]:
+                return Client(**response_json["client"])
 
 
 class APIClientFactory:

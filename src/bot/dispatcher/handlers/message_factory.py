@@ -71,7 +71,7 @@ class GamesSubscribedMessageFactory:
 
 class DeleteSubsMessageFactory:
     @classmethod
-    def get_message(cls, client_id: int, message_id: int) -> BaseMessage:
+    def get_message(cls, message_id: int) -> BaseMessage:
         text = "Are you sure?"
         inline_keyboard = [[
             InlineKeyboardButton(
