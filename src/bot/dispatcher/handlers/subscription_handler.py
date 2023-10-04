@@ -70,7 +70,7 @@ async def delete_my_subscriptions_handler(message: Message) -> None:
     chat_id = message.from_user.id
     api_client = await APIClientFactory.get_client()
     client_id = await api_client._cache_storage.get(chat_id)  # noqa
-    msg = DeleteSubsMessageFactory.get_message(client_id, message.message_id)
+    msg = DeleteSubsMessageFactory.get_message(message.message_id)
     await message.answer(text=msg.text, reply_markup=msg.buttons)
 
 

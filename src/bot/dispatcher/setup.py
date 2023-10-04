@@ -13,9 +13,9 @@ async def init_handlers(dp: Dispatcher):
     storage = await AsyncRedisCache()
     client = await APIClientFactory.get_client()
     dp.message.middleware(AuthMessageMiddleware(client, storage))
-    dp.include_router(search_router)
     dp.include_router(start_router)
     dp.include_router(subscription_router)
+    dp.include_router(search_router)
 
 
 async def start_bot(dispatcher: Dispatcher, bot: Bot,  **kwargs):

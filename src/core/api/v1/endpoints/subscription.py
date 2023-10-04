@@ -19,7 +19,7 @@ async def get_my_subscriptions(
 
 
 @subscriptions_router.delete("", response_model=schemas.BaseResponse)
-async def get_my_subscriptions(
+async def delete_my_subscriptions(
         ds: schemas.DeleteGamesSubscribed = Depends(),
         subscription_service: SubscriptionServiceI = Depends(deps.get_subscription_service)):
     await subscription_service.delete_games_subscribed(ds.client_id)

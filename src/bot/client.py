@@ -93,7 +93,7 @@ class APIClient(APIClientI):
     async def unregister_client(self, chat_id: int):
         client_id = self._cache_storage.get(chat_id)
         body = {
-            "client_id": client_id
+            "client_id": int(client_id)
         }
         async with self.__client() as client:
             response: Response = await client.delete("api/v1/client/registration", json=body)
@@ -104,7 +104,7 @@ class APIClient(APIClientI):
     async def subscribe_to_game(self, chat_id: int, game_id: int):
         client_id = await self._cache_storage.get(chat_id)
         body = {
-            "client_id": client_id,
+            "client_id": int(client_id),
             "game_id": game_id
         }
         async with self.__client() as client:
@@ -116,7 +116,7 @@ class APIClient(APIClientI):
     async def unsubscribe_from_game(self, chat_id: int, game_id: int):
         client_id = await self._cache_storage.get(chat_id)
         body = {
-            "client_id": client_id,
+            "client_id": int(client_id),
             "game_id": game_id
         }
         async with self.__client() as client:
@@ -128,7 +128,7 @@ class APIClient(APIClientI):
     async def get_all_subscriptions(self, chat_id: int):
         client_id = await self._cache_storage.get(chat_id)
         params = {
-            "client_id": client_id
+            "client_id": int(client_id)
         }
         async with self.__client() as client:
             response: Response = await client.get("api/v1/subscriptions", params=params)
@@ -141,7 +141,7 @@ class APIClient(APIClientI):
     async def delete_all_subscriptions(self, chat_id: int):
         client_id = await self._cache_storage.get(chat_id)
         body = {
-            "client_id": client_id
+            "client_id": int(client_id)
         }
         async with self.__client() as client:
             response: Response = await client.delete("api/v1/subscriptions", params=body)
