@@ -3,6 +3,9 @@ from abc import ABC, abstractmethod
 from redis.asyncio import BlockingConnectionPool, Redis
 
 from config import settings
+from logger.logger import get_logger
+
+logger = get_logger()
 
 
 class CacheStorageI(ABC):
@@ -29,12 +32,12 @@ class AsyncRedisCache(CacheStorageI):
         return self.init().__await__()
 
     async def init(self):
-        print(self._host)
+        await logger.info(f"redis host: {self._host}")
         self._pool = await Redis(
             host=self._host,
             connection_pool=self.__pool,
             db=5
-        )  # noqa
+        )
         return self
 
     async def set(self, key, value):
