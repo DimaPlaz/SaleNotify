@@ -34,9 +34,6 @@ services:
 
   migrations:
     image: sale_service
-    build:
-      context: ../
-      dockerfile: devops/Dockerfile
     environment:
       <<: *common-variables
     working_dir: /
