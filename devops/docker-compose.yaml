@@ -38,6 +38,8 @@ services:
       <<: *common-variables
     working_dir: /
     command: aerich upgrade
+    depends_on:
+      - db
 
   app:
     image: sale_service
