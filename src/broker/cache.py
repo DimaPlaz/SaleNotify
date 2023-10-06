@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 from redis.asyncio import BlockingConnectionPool, Redis
 
+from config import settings
+
 
 class CacheStorageI(ABC):
     @abstractmethod
@@ -15,7 +17,9 @@ class CacheStorageI(ABC):
 
 class AsyncRedisCache(CacheStorageI):
     def __init__(self,
-                 max_connections: int = 10):
+                 max_connections: int = 10,
+                 host: str = settings.REDIS_HOST):
+        self._host = host
         self.__pool = BlockingConnectionPool(
             decode_responses=True,
             max_connections=max_connections
@@ -25,7 +29,11 @@ class AsyncRedisCache(CacheStorageI):
         return self.init().__await__()
 
     async def init(self):
-        self._pool = await Redis(connection_pool=self.__pool, db=5)  # noqa
+        self._pool = await Redis(
+            host=self._host,
+            connection_pool=self.__pool,
+            db=5
+        )  # noqa
         return self
 
     async def set(self, key, value):
