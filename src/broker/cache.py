@@ -29,6 +29,7 @@ class AsyncRedisCache(CacheStorageI):
         return self.init().__await__()
 
     async def init(self):
+        print(self._host)
         self._pool = await Redis(
             host=self._host,
             connection_pool=self.__pool,
