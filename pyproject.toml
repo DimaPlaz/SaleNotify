@@ -31,7 +31,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.aerich]
-location = "./src/migrations/"
+location = "./migrations/"
 src_folder = "./src/"
 tortoise_orm = "config.TORTOISE_ORM"
 
