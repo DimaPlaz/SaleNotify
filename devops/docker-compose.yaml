@@ -1,7 +1,7 @@
 version: '3.4'
 
 x-common-variables: &common-variables
-  DEBUG: True
+  DEBUG: true
   ENVIRONMENT: production
   SERVICE_NAME: sale-notify
   POSTGRES_NAME: ${POSTGRES_NAME}
