@@ -172,7 +172,7 @@ class APIClient(APIClientI):
 class APIClientFactory:
     @classmethod
     async def get_client(cls):
-        storage = await AsyncRedisCache()
+        storage = await AsyncRedisCache(host=settings.REDIS_HOST)
         return APIClient(
             settings.SELF_URL,
             storage

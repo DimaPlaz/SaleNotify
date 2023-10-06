@@ -10,7 +10,7 @@ from config import settings
 
 
 async def init_handlers(dp: Dispatcher):
-    storage = await AsyncRedisCache()
+    storage = await AsyncRedisCache(host=settings.REDIS_HOST)
     client = await APIClientFactory.get_client()
     dp.message.middleware(AuthMessageMiddleware(client, storage))
     dp.include_router(start_router)
