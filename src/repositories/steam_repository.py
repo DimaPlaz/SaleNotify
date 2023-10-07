@@ -27,7 +27,7 @@ class SteamRepository(BaseSteamRepository):
 
         for block in bs.find_all("a", class_="search_result_row"):
             title = block.find_all("span", class_="title")[0].text
-            discount_block = block.find_all("div", class_="discount_block")
+            discount_block = block.select('div.discount_block:not(.no_discount)')
             image = block.find_all("img")[0]
             image_link: str = image["srcset"].split(" ")[-2].split("?")[0]
             image_link = image_link[:image_link.rfind("/")] + "/header.jpg"
