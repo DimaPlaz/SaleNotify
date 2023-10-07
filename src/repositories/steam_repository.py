@@ -89,6 +89,7 @@ class SteamRepository(BaseSteamRepository):
                     params["start"] += settings.STEAM_SEARCH_COUNT
                     await logger.debug(f"Выгрузил {params['start']} из {content['total_count']}")
             except (httpx.ConnectTimeout,
+                    httpx.ConnectError,
                     json.decoder.JSONDecodeError,
                     TimeoutError,
                     ReadTimeout) as err:
