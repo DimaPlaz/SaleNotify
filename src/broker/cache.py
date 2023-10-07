@@ -23,11 +23,10 @@ class AsyncRedisCache(CacheStorageI):
     def __init__(self,
                  host: str = settings.REDIS_HOST,
                  port: int = settings.REDIS_PORT,
-                 max_connections: int = 10,):
+                 max_connections: int = 10):
         self._redis_url = f"redis://{host}:{port}/5"
         self._pool = Redis.from_url(
             url=self._redis_url,
-            connection_class=BlockingConnectionPool,
             max_connections=max_connections
         )
 
