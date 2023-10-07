@@ -50,7 +50,7 @@ docker build -f devops/Dockerfile -t sale_service .
 
 ### 5. Run with Docker Compose
 ```bash
-docker-compose -f devops/docker-compose.yaml --env-file=devops/.env up -d
+docker compose -f devops/docker-compose.yaml --env-file=devops/.env up -d
 ```
 After these steps, the service should be up and running. Ensure the .env file is properly configured before starting the service.
 
