@@ -19,7 +19,7 @@ async def create_celery():
     app.conf.beat_schedule = {
         "sync_games": {
             "task": "core.tasks.sync_games_task",
-            "schedule": timedelta(hours=1),
+            "schedule": timedelta(seconds=1),
         },
     }
     app.autodiscover_tasks()
