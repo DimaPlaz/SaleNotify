@@ -38,7 +38,8 @@ class Settings(BaseSettings):
     TIMEZONE: str = "UTC"
     STEAM_SEARCH_URL: str = "https://store.steampowered.com/search/results/"
     STEAM_SEARCH_COUNT: int = 100
-    SELF_URL: str = "http://localhost:8000"
+    API_PORT: int = 8000
+    SELF_URL: str = f"http://localhost:{API_PORT}"
 
     def get_postgres_uri(self) -> str:
         return (

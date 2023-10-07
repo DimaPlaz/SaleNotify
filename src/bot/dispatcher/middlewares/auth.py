@@ -1,6 +1,7 @@
 from typing import Callable, Any, Awaitable
 
 from aiogram import BaseMiddleware
+from aiogram.filters import CommandStart
 from aiogram.types import Message
 
 from bot.client import APIClientI
@@ -11,7 +12,10 @@ from broker.cache import CacheStorageI
 class AuthMessageMiddleware(BaseMiddleware):
     def __init__(self,
                  client: APIClientI,
-                 storage: CacheStorageI):
+                 storage: CacheStorageI,
+                 # ignore_path_list: list[str]
+                 ):
+        # self._ignore_path_list = ignore_path_list
         self._client = client
         self._storage = storage
 
@@ -21,6 +25,9 @@ class AuthMessageMiddleware(BaseMiddleware):
         event: Message,
         data: dict[str, Any]
     ) -> Any:
+        if data.get("command") and data["command"].text == "/start":
+            return await handler(event, data)
+
         chat_id = event.from_user.id
         client_id = await self._storage.get(chat_id)
         if not client_id:
