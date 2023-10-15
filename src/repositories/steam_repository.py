@@ -78,7 +78,7 @@ class SteamRepository(BaseSteamRepository):
                 async with httpx.AsyncClient() as client:
                     r = await client.get(self.search_url, params=params)
                     if r.status_code != 200:
-                        await logger.debug(f"Жопа: {r.content}")
+                        await logger.debug(f"error on steam server: {r.content}")
                         await sleep(60)
                         continue
 
@@ -88,12 +88,13 @@ class SteamRepository(BaseSteamRepository):
                         break
 
                     params["start"] += settings.STEAM_SEARCH_COUNT
-                    await logger.debug(f"Выгрузил {params['start']} из {content['total_count']}")
+                    await logger.debug(f"downloaded {params['start']} "
+                                       f"out of {content['total_count']}")
             except (httpx.ConnectTimeout,
                     httpx.ConnectError,
                     json.decoder.JSONDecodeError,
                     TimeoutError,
                     ReadTimeout) as err:
-                await logger.debug(f"Jopa blyat': {err}")
+                await logger.debug(f"error getting games from steam: {err}")
                 await sleep(10)
                 continue
