@@ -118,10 +118,10 @@ class SteamRepository(BaseSteamRepository):
         async with httpx.AsyncClient(transport=transport) as client:
             r = await client.get(wishlist_url)
             r.raise_for_status()
-            wishlist = r.json()
-            if wishlist == {"success": 2}:
+            if r.text == '{"success":2}':
                 raise SteamEmptyWishlistError()
 
+            wishlist = r.json()
             steam_ids = [f"App_{k}" for k, v in wishlist.items()
                          if v["type"] == "Game"
                          and not v["is_free_game"]]
