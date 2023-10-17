@@ -64,6 +64,11 @@ class UnsubscribeRequest(BaseSubscriptionRequest):
     ...
 
 
+class SyncWishlistRequest(BaseModel):
+    client_id: int
+    steam_profile_url: str
+
+
 class BaseGameSchema(BaseModel):
     id: int
     steam_id: str

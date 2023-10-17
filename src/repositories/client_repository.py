@@ -21,3 +21,6 @@ class TortoiseClientRepository(BaseClientRepository):
         if client:
             return ClientFactory.model_to_dto(client)
 
+    async def get_clients_by_id(self, client_id: int) -> Client:
+        client = await ClientModel.get(id=client_id)
+        return ClientFactory.model_to_dto(client)

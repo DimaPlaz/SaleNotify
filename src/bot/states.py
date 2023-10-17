@@ -6,6 +6,10 @@ class GameSearchState(StatesGroup):
     input = State()
 
 
+class ExportWishlistState(StatesGroup):
+    init = State()
+
+
 class DeleteSubsState(StatesGroup):
     confirm = State()
     delete = State()

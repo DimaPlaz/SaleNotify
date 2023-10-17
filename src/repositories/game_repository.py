@@ -1,3 +1,5 @@
+from tortoise.expressions import Q
+
 from core.models import GameModel
 from dtos.game import Game, CreateGame, UpdateGame
 from dtos.factories import GameFactory
@@ -46,3 +48,6 @@ class TortoiseGameRepository(BaseGameRepository):
         games = await GameModel.filter(discount__gte=70).order_by("-review_count").limit(20)
         return GameFactory.models_to_dtos(games)
 
+    async def get_games_by_steam_ids_without_subs(self, steam_ids: list[str], game_ids: list[int]) -> list[Game]:
+        games = await GameModel.filter(steam_id__in=steam_ids).exclude(id__in=game_ids).all()
+        return GameFactory.models_to_dtos(games)

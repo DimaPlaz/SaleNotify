@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from redis.asyncio import BlockingConnectionPool, Redis
+from redis.asyncio import Redis
 
 from config import settings
 from logger.logger import get_logger
@@ -34,7 +34,7 @@ class AsyncRedisCache(CacheStorageI):
         return self.init().__await__()
 
     async def init(self):
-        await logger.info(f"redis url: {self._redis_url}")
+        # await logger.info(f"redis url: {self._redis_url}")
         return self
 
     async def set(self, key, value):

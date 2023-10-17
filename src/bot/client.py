@@ -50,6 +50,13 @@ class APIClientI(ABC):
     async def get_client_by_chat_id(self, chat_id: int) -> Client | None:
         raise NotImplementedError
 
+    @abstractmethod
+    async def subscribe_to_games_from_wishlist(
+            self,
+            chat_id: int,
+            steam_profile_url: str):
+        raise NotImplementedError
+
 
 class APIClient(APIClientI):
     def __init__(self,
@@ -167,6 +174,16 @@ class APIClient(APIClientI):
             response_json = response.json()
             if response_json["success"]:
                 return Client(**response_json["client"])
+
+    async def subscribe_to_games_from_wishlist(self, chat_id: int, steam_profile_url: str):
+        client_id = await self._cache_storage.get(chat_id)
+        body = {
+            "client_id": int(client_id),
+            "steam_profile_url": steam_profile_url
+        }
+        async with self.__client() as client:
+            r = await client.post("api/v1/subscriptions/sync-wishlist", json=body)
+            r.raise_for_status()
 
 
 class APIClientFactory:

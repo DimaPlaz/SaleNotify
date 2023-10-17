@@ -4,6 +4,9 @@ from typing import Optional
 from aiogram.types import InlineKeyboardMarkup
 
 
+SteamID = str
+
+
 @dataclass
 class Game:
     name: str

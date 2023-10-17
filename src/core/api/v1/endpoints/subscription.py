@@ -1,6 +1,7 @@
 from dataclasses import asdict
 
 from fastapi import APIRouter, Depends
+from starlette.background import BackgroundTasks
 
 from core.api import deps
 from core.api.v1 import schemas
@@ -39,4 +40,17 @@ async def unsubscribe(usr: schemas.UnsubscribeRequest,
                       subscription_service: SubscriptionServiceI = Depends(deps.get_subscription_service)):
     remove_subscription = RemoveSubscription(usr.client_id, usr.game_id)
     await subscription_service.unsubscribe(remove_subscription)
+    return schemas.BaseResponse(success=True)
+
+
+@subscriptions_router.post("/sync-wishlist", response_model=schemas.BaseResponse)
+async def unsubscribe(swl: schemas.SyncWishlistRequest,
+                      background_tasks: BackgroundTasks,
+                      subscription_service: SubscriptionServiceI = Depends(deps.get_subscription_service)):
+    if swl and subscription_service:
+        background_tasks.add_task(
+            subscription_service.subscribe_to_games_from_wishlist,
+            client_id=swl.client_id,
+            steam_profile_url=swl.steam_profile_url
+        )
     return schemas.BaseResponse(success=True)

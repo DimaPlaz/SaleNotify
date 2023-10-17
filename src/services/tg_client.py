@@ -43,3 +43,6 @@ class TGClient:
             caption=game_message.text,
             reply_markup=game_message.buttons
         )
+
+    async def send_message(self, chat_id: int, message: str):
+        await self._bot.send_message(chat_id=chat_id, text=message)

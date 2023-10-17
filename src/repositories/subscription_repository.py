@@ -23,3 +23,10 @@ class TortoiseSubscriptionRepository(BaseSubscriptionRepository):
 
     async def delete_client_subscriptions(self, client_id: int):
         await GameSubscriptionModel.filter(client_id=client_id).delete()
+
+    async def bulk_subscribe(self, client_id: int, game_ids: list[int]):
+        subs = [
+            GameSubscriptionModel(client_id=client_id, game_id=game_id)
+            for game_id in game_ids
+        ]
+        await GameSubscriptionModel.bulk_create(subs, batch_size=300)

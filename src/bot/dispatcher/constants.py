@@ -17,3 +17,8 @@ delete_all_subs = emoji.emojize("Are you sure you want to delete all your subscr
 deleted_subs = emoji.emojize("Subscriptions successfully deleted :like:")
 canceled_deleting_subs = emoji.emojize("Subscriptions deletion canceled :like:")
 unregistered_user = "First you need to click on the /start command"
+share_steam_profile_msg = emoji.emojize("Please send me a link to your Steam profile:backhand_index_pointing_down:\n"
+                                        "To do this, you can share the profile from the Steam application "
+                                        "or paste the link directly from the browser if you are using a PC.")
+wishlist_sync_starter_msg = emoji.emojize(":thumbs_up: Synchronization with the Steam wishlist has started, "
+                                          "expect good news.")

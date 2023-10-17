@@ -7,7 +7,10 @@ import httpx
 from httpx import ReadTimeout
 
 from config import settings
-from dtos.game import Game
+from dtos.game import Game, SteamID
+from exceptions.steam import (SteamBadProfileUrlError,
+                              SteamEmptyWishlistError,
+                              SteamWishlistWithoutPaidGamesError)
 from logger.logger import get_logger
 from repositories.interfaces import BaseSteamRepository
 
@@ -16,7 +19,10 @@ logger = get_logger()
 
 
 class SteamRepository(BaseSteamRepository):
-    def __init__(self, search_url: str = settings.STEAM_SEARCH_URL):
+    def __init__(self,
+                 search_url: str = settings.STEAM_SEARCH_URL,
+                 wishlist_url: str = settings.STEAM_WISHLIST_URL):
+        self._wishlist_url = wishlist_url
         self.search_url = search_url
 
     @staticmethod
@@ -98,3 +104,29 @@ class SteamRepository(BaseSteamRepository):
                 await logger.debug(f"error getting games from steam: {err}")
                 await sleep(10)
                 continue
+
+    async def get_wishlist_by_profile_url(self, profile_url: str) -> list[SteamID]:
+        pattern = r"https:\/\/steamcommunity\.com\/(profiles\/\d+|id\/\w+)"
+        match = re.search(pattern, profile_url)
+        if not match:
+            raise SteamBadProfileUrlError()
+
+        profile_id = match.group(1)
+        wishlist_url = self._wishlist_url.format(profile_id=profile_id)
+
+        transport = httpx.AsyncHTTPTransport(retries=5)
+        async with httpx.AsyncClient(transport=transport) as client:
+            r = await client.get(wishlist_url)
+            r.raise_for_status()
+            wishlist = r.json()
+            if wishlist == {"success": 2}:
+                raise SteamEmptyWishlistError()
+
+            steam_ids = [f"App_{k}" for k, v in wishlist.items()
+                         if v["type"] == "Game"
+                         and not v["is_free_game"]]
+            if not steam_ids:
+                raise SteamWishlistWithoutPaidGamesError()
+
+        return steam_ids
+

@@ -28,6 +28,9 @@ class NotifierService(NotifierI):
 
         await asyncio.gather(*tasks)
 
+    async def send_message(self, chat_id: int, message: str):
+        await self._tg_client.send_message(chat_id, message)
+
 
 class NotifierServiceFactory:
     @classmethod

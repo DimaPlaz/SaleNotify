@@ -41,6 +41,10 @@ class SubscriptionServiceI(ABC):
     async def delete_games_subscribed(self, client_id: int):
         raise NotImplementedError
 
+    @abstractmethod
+    async def subscribe_to_games_from_wishlist(self, client_id: int, steam_profile_url: str):
+        raise NotImplementedError
+
 
 class GamesServiceI(ABC):
     @abstractmethod
@@ -55,4 +59,8 @@ class GamesServiceI(ABC):
 class NotifierI(ABC):
     @abstractmethod
     async def notify_clients(self, game_id: int):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def send_message(self, chat_id: int, message: str):
         raise NotImplementedError

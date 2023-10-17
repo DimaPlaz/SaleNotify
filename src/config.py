@@ -37,6 +37,7 @@ class Settings(BaseSettings):
                                  "core.tasks.notify"]
     TIMEZONE: str = "UTC"
     STEAM_SEARCH_URL: str = "https://store.steampowered.com/search/results/"
+    STEAM_WISHLIST_URL: str = "https://store.steampowered.com/wishlist/{profile_id}/wishlistdata/"
     STEAM_SEARCH_COUNT: int = 100
     API_PORT: int = 8000
     SELF_URL: str = f"http://localhost:{API_PORT}"

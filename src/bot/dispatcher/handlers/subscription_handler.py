@@ -1,4 +1,6 @@
 from aiogram import Router, F
+from aiogram.filters import StateFilter
+from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message, URLInputFile
 
 from bot.client import APIClientFactory
@@ -6,10 +8,11 @@ from bot.dispatcher.constants import (subscribed_message,
                                       unsubscribed_message,
                                       no_subscriptions,
                                       deleted_subs,
-                                      canceled_deleting_subs)
+                                      canceled_deleting_subs, share_steam_profile_msg, wishlist_sync_starter_msg)
 from bot.dispatcher.handlers.message_factory import (GamesSubscribedMessageFactory,
                                                      DeleteSubsMessageFactory)
-
+from bot.dispatcher.markups import menu_commands
+from bot.states import ExportWishlistState, GameSearchState
 
 subscription_router = Router()
 
@@ -67,11 +70,24 @@ async def my_subscriptions_handler(message: Message) -> None:
 
 @subscription_router.message(F.text == "delete all my subscriptions")
 async def delete_my_subscriptions_handler(message: Message) -> None:
-    chat_id = message.from_user.id
-    api_client = await APIClientFactory.get_client()
-    client_id = await api_client._cache_storage.get(chat_id)  # noqa
     msg = DeleteSubsMessageFactory.get_message(message.message_id)
     await message.answer(text=msg.text, reply_markup=msg.buttons)
+
+
+@subscription_router.message(F.text == "export from steam wishlist")
+async def export_steam_wishlist_handler(message: Message, state: FSMContext) -> None:
+    await state.set_state(ExportWishlistState.init)
+    await message.answer(text=share_steam_profile_msg, reply_markup=menu_commands)
+
+
+@subscription_router.message(F.text.startswith("https://"),
+                             StateFilter(ExportWishlistState.init))
+async def export_steam_wishlist_handler(message: Message, state: FSMContext) -> None:
+    chat_id = message.from_user.id
+    api_client = await APIClientFactory.get_client()
+    await state.set_state(GameSearchState.input)
+    await api_client.subscribe_to_games_from_wishlist(chat_id, message.text)
+    await message.answer(text=wishlist_sync_starter_msg, reply_markup=menu_commands)
 
 
 @subscription_router.callback_query(F.data.startswith("confirm-"))

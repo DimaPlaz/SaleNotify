@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from dtos.client import CreateClient, Client
-from dtos.game import Game, CreateGame, UpdateGame, CreateSubscription, RemoveSubscription, Subscription
+from dtos.game import Game, CreateGame, UpdateGame, CreateSubscription, RemoveSubscription, Subscription, SteamID
 
 
 class BaseGameRepository(ABC):
@@ -37,10 +37,18 @@ class BaseGameRepository(ABC):
     async def get_top_by_discount(self) -> list[Game]:
         raise NotImplementedError
 
+    @abstractmethod
+    async def get_games_by_steam_ids_without_subs(self, steam_ids: list[str], game_ids: list[int]) -> list[Game]:
+        raise NotImplementedError
+
 
 class BaseSteamRepository(ABC):
     @abstractmethod
     async def get_games(self) -> list[Game]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_wishlist_by_profile_url(self, profile_url: str) -> list[SteamID]:
         raise NotImplementedError
 
 
@@ -65,6 +73,10 @@ class BaseSubscriptionRepository(ABC):
     async def delete_client_subscriptions(self, client_id: int):
         raise NotImplementedError
 
+    @abstractmethod
+    async def bulk_subscribe(self, client_id: int, game_ids: list[int]):
+        raise NotImplementedError
+
 
 class BaseClientRepository(ABC):
     @abstractmethod
@@ -77,4 +89,8 @@ class BaseClientRepository(ABC):
 
     @abstractmethod
     async def get_clients_by_game(self, game_id: int) -> list[Client]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def get_clients_by_id(self, client_id: int) -> Client:
         raise NotImplementedError

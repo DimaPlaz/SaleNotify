@@ -4,6 +4,7 @@ from aiogram.types import (ReplyKeyboardMarkup,
 keyboard = [[KeyboardButton(text="search")],
             [KeyboardButton(text="my subscriptions"),
              KeyboardButton(text="delete all my subscriptions")],
+            [KeyboardButton(text="export from steam wishlist")],
             [KeyboardButton(text="Yummy")]]
 menu_commands = ReplyKeyboardMarkup(
     keyboard=keyboard,
