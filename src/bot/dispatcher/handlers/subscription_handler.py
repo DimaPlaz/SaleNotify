@@ -8,7 +8,8 @@ from bot.dispatcher.constants import (subscribed_message,
                                       unsubscribed_message,
                                       no_subscriptions,
                                       deleted_subs,
-                                      canceled_deleting_subs, share_steam_profile_msg, wishlist_sync_starter_msg)
+                                      canceled_deleting_subs, share_steam_profile_msg, wishlist_sync_starter_msg,
+                                      subs_button, delete_subs_button, steam_wishlist_button)
 from bot.dispatcher.handlers.message_factory import (GamesSubscribedMessageFactory,
                                                      DeleteSubsMessageFactory)
 from bot.dispatcher.markups import menu_commands
@@ -53,7 +54,7 @@ async def unsubscribe_handler(callback: CallbackQuery) -> None:
     await callback.answer(text=unsubscribed_message, show_alert=True)
 
 
-@subscription_router.message(F.text == "my subscriptions")
+@subscription_router.message(F.text == subs_button)
 async def my_subscriptions_handler(message: Message) -> None:
     chat_id = message.from_user.id
     api_client = await APIClientFactory.get_client()
@@ -68,13 +69,13 @@ async def my_subscriptions_handler(message: Message) -> None:
         await message.answer(text=no_subscriptions)
 
 
-@subscription_router.message(F.text == "delete all my subscriptions")
+@subscription_router.message(F.text == delete_subs_button)
 async def delete_my_subscriptions_handler(message: Message) -> None:
     msg = DeleteSubsMessageFactory.get_message(message.message_id)
     await message.answer(text=msg.text, reply_markup=msg.buttons)
 
 
-@subscription_router.message(F.text == "export from steam wishlist")
+@subscription_router.message(F.text == steam_wishlist_button)
 async def export_steam_wishlist_handler(message: Message, state: FSMContext) -> None:
     await state.set_state(ExportWishlistState.init)
     await message.answer(text=share_steam_profile_msg, reply_markup=menu_commands)

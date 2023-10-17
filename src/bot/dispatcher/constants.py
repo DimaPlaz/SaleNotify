@@ -22,3 +22,9 @@ share_steam_profile_msg = emoji.emojize("Please send me a link to your Steam pro
                                         "or paste the link directly from the browser if you are using a PC.")
 wishlist_sync_starter_msg = emoji.emojize(":thumbs_up: Synchronization with the Steam wishlist has started, "
                                           "expect good news.")
+
+search_button = emoji.emojize(":magnifying_glass_tilted_left:search")
+yammy_button = emoji.emojize(":fire:Yammy:fire:")
+subs_button = emoji.emojize(":bell:subs")
+delete_subs_button = emoji.emojize(":bell_with_slash:delete subs")
+steam_wishlist_button = emoji.emojize(":eyes::open_book::video_game:import steam wishlist")

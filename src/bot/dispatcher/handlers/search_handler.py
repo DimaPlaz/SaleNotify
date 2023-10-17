@@ -6,7 +6,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, URLInputFile
 
 from bot.client import APIClientFactory
-from bot.dispatcher.constants import start_search_msg, nothing_was_found
+from bot.dispatcher.constants import start_search_msg, nothing_was_found, yammy_button, search_button
 from bot.dispatcher.handlers.message_factory import SearchGamesMessageFactory
 from bot.dispatcher.markups import menu_commands
 from bot.states import GameSearchState
@@ -15,7 +15,7 @@ from bot.states import GameSearchState
 search_router = Router()
 
 
-@search_router.message(F.text == "Yummy")
+@search_router.message(F.text == yammy_button)
 async def top_games_by_discount_handler(message: Message):
     api_client = await APIClientFactory.get_client()
     games = await api_client.get_top_games_by_discount()
@@ -27,7 +27,7 @@ async def top_games_by_discount_handler(message: Message):
                                    reply_markup=game_message.buttons)
 
 
-@search_router.message(F.text == "search")
+@search_router.message(F.text == search_button)
 async def start_search_games_handler(message: Message, state: FSMContext) -> None:
     await state.set_state(GameSearchState.input)
     await message.answer(start_search_msg, reply_markup=menu_commands)
