@@ -65,7 +65,7 @@ services:
     image: sale_service
     environment:
       <<: *common-variables
-    command: celery -A broker:celery_app beat
+    command: celery -A broker.celery:celery_app beat
     depends_on:
       - app
       - redis
@@ -75,7 +75,7 @@ services:
     image: sale_service
     environment:
       <<: *common-variables
-    command: celery -A broker:celery_app worker --concurrency 1
+    command: celery -A broker.celery:celery_app worker --concurrency 1
     depends_on:
       - app
       - redis
