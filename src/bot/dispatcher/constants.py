@@ -24,7 +24,7 @@ wishlist_sync_starter_msg = emoji.emojize(":thumbs_up: Synchronization with the 
                                           "expect good news.")
 
 search_button = emoji.emojize(":magnifying_glass_tilted_left:search")
-yammy_button = emoji.emojize(":fire:Yammy:fire:")
+yammy_button = emoji.emojize(":fire:Yummy:fire:")
 subs_button = emoji.emojize(":bell:subs")
 delete_subs_button = emoji.emojize(":bell_with_slash:delete subs")
 steam_wishlist_button = emoji.emojize(":eyes::open_book::video_game:import steam wishlist")
