@@ -5,6 +5,10 @@ from aiogram.types.input_file import URLInputFile
 
 from dtos.game import Game, NotifyGameMessage
 from dtos.notifications import NotifyClient
+from logger.logger import get_logger
+
+
+logger = get_logger()
 
 
 class NotifyGamesMessageFactory:
@@ -37,12 +41,15 @@ class TGClient:
     async def notify_client(self, notify_client: NotifyClient):
         game_message = NotifyGamesMessageFactory.game_to_message(notify_client.game)
         photo = URLInputFile(url=game_message.image_url)
-        await self._bot.send_photo(
-            notify_client.chat_id,
-            photo,
-            caption=game_message.text,
-            reply_markup=game_message.buttons
-        )
+        try:
+            await self._bot.send_photo(
+                notify_client.chat_id,
+                photo,
+                caption=game_message.text,
+                reply_markup=game_message.buttons
+            )
+        except Exception as err:
+            await logger.error(f"Client notify error: {err}")
 
     async def send_message(self, chat_id: int, message: str):
         await self._bot.send_message(chat_id=chat_id, text=message)
