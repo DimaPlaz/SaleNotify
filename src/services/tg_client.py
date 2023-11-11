@@ -1,3 +1,5 @@
+import asyncio
+
 import emoji
 from aiogram import Dispatcher, Bot
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -38,10 +40,17 @@ class TGClient:
         self._dp = dp
         self._bot = bot
 
+    @staticmethod
+    async def __check_event_loop():
+        # TODO fix problem with event loop breaking
+        if asyncio.get_event_loop().is_closed():
+            asyncio.set_event_loop(asyncio.new_event_loop())
+
     async def notify_client(self, notify_client: NotifyClient):
         game_message = NotifyGamesMessageFactory.game_to_message(notify_client.game)
         photo = URLInputFile(url=game_message.image_url)
         try:
+            await self.__check_event_loop()
             await self._bot.send_photo(
                 notify_client.chat_id,
                 photo,
